@@ -6,7 +6,7 @@
 
 2. run "python json_to_protoc.py"
 
-3. Get *.protoc files in dir "schema_file"
+3. Get *.protoc files in dir "protoc_file"
 
 ##Example
 Input
@@ -50,12 +50,12 @@ Input
 	
 Output
 
-	message personData {
+	message PersonData {
 	  required string kind = 1;
 	  required string gender = 2;
 	  required int64 age = 3;
-	  repeated Citieslived citiesLived = 4;
-	  required Phonenumber phoneNumber = 5;
+	  repeated CitiesLived citiesLived = 4;
+	  required PhoneNumber phoneNumber = 5;
 	  required string fullName = 6;
 	  repeated Children children = 7;
 	}
@@ -66,12 +66,12 @@ Output
 	  required string name = 3;
 	}
 	
-	message Phonenumber {
+	message PhoneNumber {
 	  required string areaCode = 1;
 	  required string number = 2;
 	}
 	
-	message Citieslived {
+	message CitiesLived {
 	  repeated string yearsLived = 1;
 	  required string place = 2;
 	}

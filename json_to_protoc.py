@@ -25,7 +25,7 @@ def get_protoc(json_data, doc_stack):
 			continue
 
 		if isinstance(json_data[key], dict):
-			ret += "  required {} {} = {};\n".format(key.title(), key, seed)
+			ret += "  required {} {} = {};\n".format(capitalize(key), key, seed)
 			doc_stack.append({"key":key, "json":json.dumps(json_data[key])})
 		
 		if isinstance(json_data[key], list):
@@ -46,7 +46,7 @@ def get_protoc(json_data, doc_stack):
 					ret += "  repeated string {} = {};\n".format(key, seed)
 					continue
 				elif isinstance(json_data[key][0], dict):
-					ret += "  repeated {} {} = {};\n".format(key.title(), key, seed)
+					ret += "  repeated {} {} = {};\n".format(capitalize(key), key, seed)
 					doc_stack.append({"key":key, "json":json.dumps(json_data[key][0])})
 					continue
 	return ret
@@ -59,21 +59,11 @@ def remove_comments(string):
     string = re.sub(re.compile("/\*.*?\*/",re.DOTALL ) ,"" ,string) # remove all occurance streamed comments (/*COMMENT */) from string
     string = re.sub(re.compile("//.*?\n" ) ,"" ,string) # remove all occurance singleline comments (//COMMENT\n ) from string
     return string
+	
+def capitalize(string):
+	return string[0].upper() + string[1:]
 		
 if __name__ == '__main__':
-	#json_data = '{"id":"4930635cf5d843eabc74ef8bb6ff7a29","product_id":"f71407577bb6479993bd09fcd9413039","retail_price":351.09736607491345,"type":{"color":"Turquoise","size":"M"}}'
-	#json_data = '{"timestampValue":{"seconds":1480291200},"variants":[{"id":"4930635cf5d843eabc74ef8bb6ff7a29","product_id":"f71407577bb6479993bd09fcd9413039","retail_price":351.09736607491345,"type":{"color":"Turquoise","size":"M"}},{"id":"18f4f000403b439b99e3397ab90bf83a","product_id":"85779bec89c14bc78f3a56103a87854b","retail_price":882.9315997833187,"type":{"color":"Pink","size":"M"}}]}'
-	# ret = 'message User{ \n'
-	# doc_stack = list()
-	# obj = json.loads(json_data)
-	# ret += get_protoc(obj, doc_stack) + '}\n\n' 
-	# while len(doc_stack) > 0:
-	# 	obj = doc_stack.pop()
-	# 	ret += 'message {} {{\n'.format(obj["key"])
-	# 	obj = json.loads(obj["json"])
-	# 	ret += get_protoc(obj, doc_stack) + '}\n\n'
-	# print ret
-
 	dir_path = './json_file'
 	out_path = './protoc_file/'
 	for filename in listdir_fullpath(dir_path):
@@ -83,15 +73,13 @@ if __name__ == '__main__':
 				output_name = os.path.splitext(basename)[0]+'.protoc'
 				doc_stack = list()
 				data = str(data_file.read())
-				print basename
 				data = remove_comments(data)
-				#print data
 				data = json.loads(data)
-				result ='message {} {{\n'.format(os.path.splitext(basename)[0])
+				result ='message {} {{\n'.format(capitalize(os.path.splitext(basename)[0]))
 				result += get_protoc(data, doc_stack) + '}\n\n'
 				while len(doc_stack) >0:
 					data = doc_stack.pop()
-					result += 'message {} {{\n'.format(data["key"].title())
+					result += 'message {} {{\n'.format(capitalize(data["key"]))
 					data = json.loads(data["json"])
 					result += get_protoc(data, doc_stack) + '}\n\n'
 				output_name = os.path.splitext(basename)[0]+'.protoc' 
