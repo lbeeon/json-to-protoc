@@ -1,4 +1,4 @@
-#Google Big Query json schema paser
+#Trans *.json to *.protoc
 
 ##How to use
 	
