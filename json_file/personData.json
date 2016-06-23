@@ -1,0 +1,36 @@
+{
+    "kind": "person",
+    "fullName": "John Doe",
+    "age": 22,
+    "gender": "Male",
+    "phoneNumber": {
+        "areaCode": "206",
+        "number": "1234567"
+    },
+    "children": [
+        {
+            "name": "Jane",
+            "gender": "Female",
+            "age": "6"
+        },
+        {
+            "name": "John",
+            "gender": "Male",
+            "age": "15"
+        }
+    ],
+    "citiesLived": [
+        {
+            "place": "Seattle",
+            "yearsLived": [
+                "1995"
+            ]
+        },
+        {
+            "place": "Stockholm",
+            "yearsLived": [
+                "2005"
+            ]
+        }
+    ]
+}
