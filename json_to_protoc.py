@@ -5,7 +5,7 @@ import re
 
 def get_protoc(json_data, doc_stack, is_required):
 	ret = ''
-	required = "required " if is_required else ""
+	required = "required " if is_required else "optional"
 	seed = 0
 	for key in json_data:
 		seed += 1
@@ -65,10 +65,26 @@ def capitalize(string):
 	return string[0].upper() + string[1:]
 		
 if __name__ == '__main__':
-	is_required = raw_input('All field {}(defalut==True)? (1 => True, 2 => False\n')
+	template = 'syntax = "proto3"\n\n'
+	template += 'package {{package name}}\n\n'
+	
+	# template += 'import "github.com/gogo/protobuf/gogoproto/gogo.proto";\n\n'
+	# template += 'option (gogoproto.equal_all) = true;\n'
+	# template += 'option (gogoproto.verbose_equal_all) = true;\n'
+	# template += 'option (gogoproto.goproto_stringer_all) = false;\n'
+	# template += 'option (gogoproto.stringer_all) =  true;\n'
+	# template += 'option (gogoproto.populate_all) = true;\n'
+	# template += 'option (gogoproto.testgen_all) = true;\n'
+	# template += 'option (gogoproto.benchgen_all) = true;\n'
+	# template += 'option (gogoproto.marshaler_all) = true;\n'
+	# template += 'option (gogoproto.sizer_all) = true;\n'
+	# template += 'option (gogoproto.unmarshaler_all) = true;\n\n\n'
+	
+	is_required = raw_input('All field required? (defalut==required) (1 => True, 2 => False\n')
 	is_required = False if is_required == "2" else True
-	dir_path = './json_file'
-	out_path = './protoc_file/'
+	dir_path = './json/'
+	out_path = './protoc/'
+		
 	for filename in listdir_fullpath(dir_path):
 		if filename.endswith(".json"):
 			with open(filename) as data_file:
@@ -86,7 +102,10 @@ if __name__ == '__main__':
 					data = json.loads(data["json"])
 					result += get_protoc(data, doc_stack, is_required) + '}\n\n'
 				output_name = os.path.splitext(basename)[0]+'.protoc' 
+				if not os.path.exists(out_path):
+				    os.makedirs(out_path)
 				f = open(out_path + output_name, 'w')
+				f.write(template)
 				f.write(result)
 				f.close()
 			

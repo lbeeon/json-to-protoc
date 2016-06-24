@@ -1,12 +1,15 @@
 #Trans *.json to *.protoc
 
 ##How to use
-	
-1. Put *.json files in dir "json_file",
 
-2. run "python json_to_protoc.py"
+1. cp json_to_protoc.py 
 
-3. Get *.protoc files in dir "protoc_file"
+2. Put *.json files in dir "json"
+
+3. Run "python json_to_protoc.py"
+
+4. Get *.protoc files in dir "protoc"
+
 
 ##Example
 Input
