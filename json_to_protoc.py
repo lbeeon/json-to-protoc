@@ -3,29 +3,30 @@ import json
 import time
 import re
 
-def get_protoc(json_data, doc_stack):
+def get_protoc(json_data, doc_stack, is_required):
 	ret = ''
+	required = "required " if is_required else ""
 	seed = 0
 	for key in json_data:
 		seed += 1
 		if isinstance(json_data[key], bool):
-			ret += "  required bool {} = {};\n".format(key, seed)
+			ret += "  {}bool {} = {};\n".format(required, key, seed)
 			continue
 
 		if isinstance(json_data[key], str) or isinstance(json_data[key], unicode) :
-			ret += "  required string {} = {};\n".format(key, seed)
+			ret += "  {}string {} = {};\n".format(required, key, seed)
 			continue
 
 		if isinstance(json_data[key], int):
-			ret += "  required int64 {} = {};\n".format(key, seed)
+			ret += "  {}int64 {} = {};\n".format(required, key, seed)
 			continue
 
 		if isinstance(json_data[key], float):
-			ret += "  required double {} = {};\n".format(key, seed)
+			ret += "  {}double {} = {};\n".format(required, key, seed)
 			continue
 
 		if isinstance(json_data[key], dict):
-			ret += "  required {} {} = {};\n".format(capitalize(key), key, seed)
+			ret += "  {}{} {} = {};\n".format(required, capitalize(key), key, seed)
 			doc_stack.append({"key":key, "json":json.dumps(json_data[key])})
 		
 		if isinstance(json_data[key], list):
@@ -64,6 +65,8 @@ def capitalize(string):
 	return string[0].upper() + string[1:]
 		
 if __name__ == '__main__':
+	is_required = raw_input('All field {}(defalut==True)? (1 => True, 2 => False\n')
+	is_required = False if is_required == "2" else True
 	dir_path = './json_file'
 	out_path = './protoc_file/'
 	for filename in listdir_fullpath(dir_path):
@@ -76,12 +79,12 @@ if __name__ == '__main__':
 				data = remove_comments(data)
 				data = json.loads(data)
 				result ='message {} {{\n'.format(capitalize(os.path.splitext(basename)[0]))
-				result += get_protoc(data, doc_stack) + '}\n\n'
+				result += get_protoc(data, doc_stack, is_required) + '}\n\n'
 				while len(doc_stack) >0:
 					data = doc_stack.pop()
 					result += 'message {} {{\n'.format(capitalize(data["key"]))
 					data = json.loads(data["json"])
-					result += get_protoc(data, doc_stack) + '}\n\n'
+					result += get_protoc(data, doc_stack, is_required) + '}\n\n'
 				output_name = os.path.splitext(basename)[0]+'.protoc' 
 				f = open(out_path + output_name, 'w')
 				f.write(result)

@@ -1,26 +1,26 @@
 message PersonData {
-  required string kind = 1;
-  required string gender = 2;
-  required int64 age = 3;
+  string kind = 1;
+  string gender = 2;
+  int64 age = 3;
   repeated CitiesLived citiesLived = 4;
-  required PhoneNumber phoneNumber = 5;
-  required string fullName = 6;
+  PhoneNumber phoneNumber = 5;
+  string fullName = 6;
   repeated Children children = 7;
 }
 
 message Children {
-  required string gender = 1;
-  required string age = 2;
-  required string name = 3;
+  string gender = 1;
+  string age = 2;
+  string name = 3;
 }
 
 message PhoneNumber {
-  required string areaCode = 1;
-  required string number = 2;
+  string areaCode = 1;
+  string number = 2;
 }
 
 message CitiesLived {
   repeated string yearsLived = 1;
-  required string place = 2;
+  string place = 2;
 }
 
