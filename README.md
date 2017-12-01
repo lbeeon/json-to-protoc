@@ -1,6 +1,6 @@
-#Trans *.json to *.protoc
+# Trans *.json to *.protoc
 
-##How to use
+## How to use
 
 1. cp json_to_protoc.py 
 
@@ -11,10 +11,10 @@
 4. Get *.protoc files in dir "protoc"
 
 
-##Example
-Input
+## Example
+Input 
 
-	{
+	{ 
 	    "kind": "person",
 	    "fullName": "John Doe",
 	    "age": 22,
@@ -50,7 +50,7 @@ Input
 	        }
 	    ]
 	}
-	
+
 Output
 
 	message PersonData {
